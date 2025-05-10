@@ -7,9 +7,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ArrowRight, Check } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/store';
+import { createUser } from '@/redux/slices/userSlice';
+
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -18,13 +24,34 @@ const SignUp = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleGoogleSignUp = () => {
-    setIsLoading(true);
-    // This is just for UI demonstration purposes
-    setTimeout(() => {
+  const handleGoogleSignUp = async (credentialResponse: any) => {
+    try {
+      setIsLoading(true);
+  
+      const decoded: any = jwt_decode(credentialResponse.credential);
+  
+      const newUser = {
+        name: decoded.name,
+        email: decoded.email,
+        password: "google_auth",
+        confirmPassword: "google_auth",
+      };
+  
+      const existing = await dispatch(fetchUserByEmail(newUser.email)).unwrap();
+  
+      if (!existing) {
+        await dispatch(createUser(newUser)).unwrap();
+        console.log("Account created via Google");
+      } else {
+        console.log("Logged in via Google");
+      }
+  
+      navigate("/dashboard");
+    } catch (error) {
+      console.log("Google login failed");
+    } finally {
       setIsLoading(false);
-      navigate('/dashboard');
-    }, 1500);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,15 +62,35 @@ const SignUp = () => {
     });
   };
 
-  const handleEmailSignUp = (e: React.FormEvent) => {
+  const handleEmailSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    // This is just for UI demonstration purposes
-    setTimeout(() => {
-      setIsLoading(false);
+  
+    if (formData.password !== formData.confirmPassword) {
+      console.log("Passwords do not match");
+      return;
+    }
+  
+    try {
+      setIsLoading(true);
+      const userPayload = {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+      };
+
+      console.log(userPayload)
+  
+      await dispatch(createUser(userPayload)).unwrap();
+      console.log("Account created successfully!");
       navigate('/dashboard');
-    }, 1500);
+    } catch (error) {
+      console.log("Email already exists or something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -230,3 +277,11 @@ const SignUp = () => {
 };
 
 export default SignUp;
+function jwt_decode(credential: any): any {
+  throw new Error('Function not implemented.');
+}
+
+function fetchUserByEmail(email: any): any {
+  throw new Error('Function not implemented.');
+}
+
