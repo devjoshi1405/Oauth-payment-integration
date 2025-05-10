@@ -16,10 +16,13 @@ import Payment from "./pages/Payment";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import DashboardLayout from "./components/DashboardLayout";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
 
 const queryClient = new QueryClient();
 
 const App = () => (
+  <Provider store={store}>
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
@@ -44,6 +47,7 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
+  </Provider>
 );
 
 export default App;

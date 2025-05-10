@@ -1,0 +1,17 @@
+{
+    "admin": [
+        {
+            "id": "1",
+            "email": "admin@gmail.com",
+            "password": "Admin@1234"
+        }
+    ],
+    "users": [
+        {
+            "name": "",
+            "email": "",
+            "password": "",
+            "confirmPassword": ""
+        }
+    ]
+}
