@@ -18,7 +18,7 @@ import { store } from "./redux/store";
 const queryClient = new QueryClient();
 
 const App = () => (
-  <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+  <GoogleOAuthProvider clientId="482986164695-rsvbafiigddbfr2lm5s9i7ain2bsf96u.apps.googleusercontent.com">
   <Provider store={store}>
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
