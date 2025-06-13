@@ -25,10 +25,12 @@ const SignUp = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleGoogleSignUp = async (credentialResponse: any) => {
+    console.log(credentialResponse)
     try {
       setIsLoading(true);
   
       const decoded: any = jwt_decode(credentialResponse.credential);
+      console.log("first", decoded)
   
       const newUser = {
         name: decoded.name,
