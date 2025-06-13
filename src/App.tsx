@@ -14,11 +14,12 @@ import DashboardLayout from "./components/DashboardLayout";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
+import { GoogleClientID } from "./lib/constant";
 
 const queryClient = new QueryClient();
 
 const App = () => (
-  <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+  <GoogleOAuthProvider clientId={GoogleClientID}>
   <Provider store={store}>
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
